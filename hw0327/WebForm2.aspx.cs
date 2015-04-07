@@ -32,6 +32,7 @@ namespace WebApplication1
                 cn.Open();
                 using (SqlCommand cmd = cn.CreateCommand())
                 {
+                   //查詢
                     cmd.CommandText = "select * from Studentdata where StudentName like @name";
                     cmd.Parameters.Add(new SqlParameter("@name", "%" + txtSearch.Text + "%"));
                     using (SqlDataReader dr = cmd.ExecuteReader())
@@ -49,16 +50,19 @@ namespace WebApplication1
         //ExecuteScalar
         protected void btnAdd_Click(object sender, EventArgs e)
         {
+            //新增語法
             string sql = @"INSERT INTO [dbo].[Studentdata]([StudentName],[StudentPhone],[StudentAddress])
                              VALUES
                                (@Name
                                ,@Phone
                                ,@Address);SELECT CAST(scope_identity() AS int);";
+            //連資料庫語法
             using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["studentConnectionString"].ConnectionString))
             {
                 cn.Open();
                 using (SqlCommand cmd = cn.CreateCommand())
                 {
+                    //新增資料對應資料庫欄位
                     cmd.CommandText = sql;
                     cmd.Parameters.Add(new SqlParameter("@Name", txtName.Text));
                     cmd.Parameters.Add(new SqlParameter("@Phone", txtPhone.Text));
@@ -66,6 +70,7 @@ namespace WebApplication1
 
                     txtID.Text = cmd.ExecuteScalar().ToString();
                 }
+                //新增完 重新搜尋(動態更新效果)
                 btnSearch_Click(null, null);
             }
         }
@@ -77,6 +82,7 @@ namespace WebApplication1
         /// <param name="e"></param>
         protected void btnEdit_Click(object sender, EventArgs e)
         {
+            //修改
             string sql = @"update [Studentdata] set [StudentName] = @Name, [StudentPhone] = @Phone, [StudentAddress] = @Address
                              where StudentId = @ID";
             using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["studentConnectionString"].ConnectionString))
@@ -99,7 +105,7 @@ namespace WebApplication1
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["studentConnectionString"].ConnectionString);
-
+            //刪除
             string sqlStatement = "DELETE FROM Studentdata WHERE StudentId = @StudentId";
 
             try

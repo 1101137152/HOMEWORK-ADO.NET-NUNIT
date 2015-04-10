@@ -18,10 +18,11 @@ namespace hw.Test
         [TestFixtureSetUp]
         public void Initial()
         {
-            string sql = @"INSERT INTO [dbo].[Employees]([Name],[Age])
+            string sql = @"INSERT INTO [dbo].[Employees]([StudentName],[StudentPhone],[StudentAddress])
                              VALUES
                                (@Name
-                               ,@Age);SELECT CAST(scope_identity() AS int);";
+                               ,@Phone
+                                ,@Address);SELECT CAST(scope_identity() AS int);";
             using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["studentConnectionString"].ConnectionString))
             {
                 cn.Open();
